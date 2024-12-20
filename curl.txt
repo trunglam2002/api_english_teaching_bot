@@ -1,0 +1,52 @@
+# study_bot (vocabulary)
+curl -X POST http://127.0.0.1:5000/chat \
+-H "Content-Type: application/json" \
+-d '{
+    "choice": 1,
+    "param1": "từ vựng",
+    "param2": "môi trường",
+    "user_input": "tôi không",
+    "conversation_history": [
+        {"user": "Good evening"},
+        {"chatbot": "Chào buổi tối! Chúng ta bắt đầu học từ vựng nhé. Chúng mình sẽ học từ \"biodiversity\". Bạn có biết từ này không?"}
+    ]
+}' | jq
+
+# study_bot (grammar)
+curl -X POST http://127.0.0.1:5000/chat \
+-H "Content-Type: application/json" \
+-d '{
+    "choice": 1,
+    "param1": "ngữ pháp",
+    "param2": "câu bị động (passive voice - present simple)",
+    "user_input": "câu bị động ở thì hiện tại đơn diễn tả một vật bị làm gì đó",
+    "conversation_history": [
+        {"user": "hello"},
+        {"chatbot": "Chào bạn! Chúng ta sẽ học về câu bị động ở thì hiện tại đơn (present simple passive). Bạn có biết về câu bị động ở thì hiện tại đơn không?"}
+    ]
+}' | jq
+
+# role_play_bot
+curl -X POST http://127.0.0.1:5000/chat \
+-H "Content-Type: application/json" \
+-d '{
+    "choice": 2,
+    "param1": "Bạn là một người bán bánh mì, còn tôi là một người mua hàng",
+    "user_input": "i want to eat something sweet",
+    "conversation_history": [
+        {"user": "hello"},
+        {"chatbot": "Hey there! What kind of banh mi are you craving today?"}
+    ]
+}' | jq
+
+#review_bot
+curl -X POST http://127.0.0.1:5000/chat \
+-H "Content-Type: application/json" \
+-d '{
+    "choice": 3,
+    "user_input": "hello",
+    "conversation_history": [
+        {"chatbot": "Phân tích lỗi sai trong câu sau: \"Ian loving pizza\""},
+        {"user": "phải sửa thành I love pizza"}
+    ]
+}' | jq
