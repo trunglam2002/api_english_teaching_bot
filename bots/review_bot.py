@@ -38,16 +38,6 @@ class ReviewBot:
             return False
         return None
 
-    def extract_analysis_result(self, analyze_response):
-        """Phân tích kết quả phân tích từ phản hồi của Gemini"""
-        pattern = r"1.\s(.*)\n2.\s(.*)"
-        match = re.search(pattern, analyze_response)
-        if match:
-            correctness = match.group(1).strip()
-            keyword = match.group(2).strip()
-            return correctness, keyword
-        return None, None
-
     def extract_question(self, chatbot_respond):
         """Phân tích lấy câu hỏi từ phản hồi của Gemini"""
         pattern = r'"([^"]*)"'

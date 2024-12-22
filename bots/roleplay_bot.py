@@ -32,7 +32,6 @@ class RolePlayBot:
         try:
             response = self.model.generate_content(analysis_prompt)
             analysis = response.text.strip()
-            print(analysis)
             # Extract errors using regex
             error_pattern = r"-\s*(.*?):\s*(.*?)\s-\s.*:\s(.*)"
             errors = re.findall(error_pattern, analysis)

@@ -54,7 +54,7 @@ def chat():
 
             keyword = study_bot.analyze_keyword_response(conversation_history)
             chatbot_response = study_bot.ask_gemini(user_input, system_prompt, conversation_history)
-            correctness = study_bot.analyze_correct_user_response(user_input, chatbot_response)
+            correctness = study_bot.analyze_correct_user_response(chatbot_response)
             print("KeyWord: ", keyword)
             # correctness, keyword = study_bot.extract_analysis_result(analyze_response)
             is_correct = True if correctness == "True" else False
@@ -69,9 +69,9 @@ def chat():
         elif choice == 2:  # RolePlayBot
             if not param1:
                 return jsonify({"error": "Missing 'param1' for RolePlayBot."}), 400
-            role_play_bot.analyze_errors(user_input)
+            analysis = role_play_bot.analyze_errors(user_input)
             chatbot_response = role_play_bot.generate_response(user_input, conversation_history, param1)
-            return jsonify({"response": chatbot_response, "conversation_history": conversation_history})
+            return jsonify({"response": chatbot_response, "grammar_errors": analysis})
 
         # Choice 3: ReviewBot 
         elif choice == 3:  # ReviewBot
@@ -82,7 +82,7 @@ def chat():
             # is_correct = True if correctness == "True" else False
             print(question)
             update_one_param(correctness, "sample_error", "example", question)
-            return jsonify({"response": chatbot_response, "conversation_history": conversation_history})
+            return jsonify({"response": chatbot_response})
         
         else:
             return jsonify({"error": "Invalid choice."}), 400

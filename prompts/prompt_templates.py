@@ -111,8 +111,8 @@ Vui lòng xác định và phân loại các lỗi sau trong câu:
    - Đoạn văn bị lặp.
  
 Lưu ý quan trọng:
-- Tuyệt đối không ghi các dòng như "Ngữ pháp: Không có lỗi", "Từ vựng: Không có lỗi", hoặc "Cấu trúc câu: Không có lỗi".
-- Có lỗi thì mới ghi ra, không có lỗi hay chấp nhận được thì bỏ qua, bỏ qua các lỗi của các câu chào, tạm biệt hoặc cảm thán.
+- Nếu không có lỗi thì bỏ qua và không trả lại.
+- Nếu lỗi không cần sửa hoặc chấp nhận được thì bỏ qua và không trả lại.
 - Tuyệt đối tuân theo form ở bên dưới và chỉ ghi ra các lỗi được liệt kê ở bên trên.
 
 Nếu có lỗi, hãy ghi ra theo đúng form sau (chỉ ghi những lỗi đã được liệt kê bên trên và phải ghi chính xác, không thêm từ hoặc ký tự khác):
