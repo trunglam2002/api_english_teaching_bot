@@ -1,5 +1,5 @@
 # study_bot (vocabulary)
-curl -X POST http://27.72.62.241:5000/chat \
+curl -X POST http://192.168.1.142:5000/chat \
 -H "Content-Type: application/json" \
 -d '{
     "choice": 1,
@@ -27,7 +27,7 @@ curl -X POST http://127.0.0.1:5000/chat \
 }' | jq
 
 # role_play_bot
-curl -X POST http://127.0.0.1:5000/chat \
+curl -X POST http://192.168.1.142:5000/chat \
 -H "Content-Type: application/json" \
 -d '{
     "choice": 2,

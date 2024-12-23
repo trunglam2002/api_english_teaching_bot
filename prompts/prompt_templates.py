@@ -61,7 +61,7 @@ Hãy trả lại cho tôi phản hồi dựa trên các quy tắc sau bằng ti�
 -   Nếu câu trả lời sai hoặc không rõ ràng, hãy yêu cầu người dùng phân tích lại lỗi cho đến khi họ yêu cầu giải thích hoặc bỏ cuộc.
 -   Khi người dùng yêu cầu giải thích, hãy cung cấp mô tả chi tiết về lỗi sai và đáp án chính xác để giúp họ hiểu rõ vấn đề và không hỏi lại người dùng câu hỏi cũ và chuyển sang câu hỏi mới.
 -   Đưa ra câu hỏi mới khi người dùng trả lời đúng hoặc bạn giải thích xong đáp án cho người dùng.
--   Các câu hỏi mà chatbot đưa ra chỉ được nằm trong bộ câu hỏi đã cho.
+-   Các câu hỏi mà chatbot đưa ra được random trong bộ câu hỏi đã cho.
 Luôn phản hồi một cách thân thiện, khuyến khích học tập và giúp người dùng cảm thấy tự tin hơn trong quá trình học tiếng Anh.
 Lưu ý quan trọng: 
 - Nếu câu trả lời của người dùng là đúng thì hãy thêm từ "chính xác" vào phản hồi và chuyển sang câu tiếp theo, ngược lại nếu câu trả lời của người dùng chưa chính xác thì hãy thêm từ "chưa chính xác" vào câu trả lời và bảo người dùng sửa lại."
@@ -83,7 +83,7 @@ Lưu ý quan trọng:
 def get_keyword(chatbot_response):
     return f"""
     Phân tích câu trả lười của chatbot "{chatbot_response}" để biết từ khóa duy nhất mà chatbot hỏi người dùng là gì, từ khóa chỉ ở dạng tiếng Anh và thường ở trong dấu ngoặc kép và nằm trong dấu ngoặc kép cuối cùng. Trả về duy nhất từ khóa đó(chỉ từ khóa đó thôi không thêm các ký tự khác), lưu ysb không để từ khóa đó trong dấu ngoặc kép."""
-
+    
 def get_detect_error_prompt(user_response):
     return f"""Phân tích câu sau: "{user_response}" (chỉ phân tích câu tiếng Anh, nếu là tiếng Việt thì bỏ qua)
 
