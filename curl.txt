@@ -50,3 +50,11 @@ curl -X POST http://127.0.0.1:5000/chat \
         {"user": "phải sửa thành I love pizza"}
     ]
 }' | jq
+
+
+#api_zalo_ai (text_to_speech)
+curl \
+  -H "apikey: lJnZmVqD5GhkXe2RfG0LTitxbpnE4usO" \
+  --data-urlencode "input=Xin chào! My name is Lam." \
+  -d "speaker_id=2" \
+  -X POST https://api.zalo.ai/v1/tts/synthesize

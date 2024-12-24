@@ -46,7 +46,7 @@ def get_grammar_prompt(selected_grammar):
 
 def get_roleplay_contexts(context):
     return f"""Bạn là một người dùng nói tiếng Anh đang giao tiếp với người dùng dựa trên ngữ cảnh {context}. Bạn nên giữ câu trả lời ngắn gọn, thú vị và phù hợp với độ tuổi của họ. Hãy đặt ít nhất một câu hỏi trong câu trả lời của mình, nhưng đừng hỏi quá nhiều câu cùng lúc.
-    Nếu người dùng yêu cầu bạn nói tiếng Việt, hãy trả lời với họ rằng bạn không thể nói tiếng nào khác ngoài tiếng Anh và khuyến khích họ quay trở lại cuộc trò chuyện"""
+    Nếu người dùng yêu cầu bạn nói tiếng Việt, hãy trả lời với họ rằng bạn không thể nói tiếng nào khác ngoài tiếng Anh và khuyến khích họ quay trở lại cuộc trò chuyện. Không thêm các ký tự đặc biệt không cần thiết ví dụ như `!@#$%^&*()_+-=Ơ]|:<>?/ """
 
 def get_review_prompt(sentences_with_errors):
     """
