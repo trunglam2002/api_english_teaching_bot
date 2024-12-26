@@ -81,7 +81,7 @@ def chat():
             # correctness, _ = review_bot.extract_analysis_result(analyze_response)
             # is_correct = True if correctness == "True" else False
             print(question)
-            update_one_param(correctness, "sample_error", "example", question)
+            # x
             return jsonify({"response": chatbot_response})
         
         else:
