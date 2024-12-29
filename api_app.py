@@ -23,10 +23,11 @@ def chat():
         param1 = data.get('param1')  # Topic, context, or None
         param2 = data.get('param2')  # Subtopic or None
         user_input = data.get('user_input')  # User's input
+        user_id = data.get('user_id')  # User's ID
         conversation_history = data.get('conversation_history', [])
 
-        if not choice or not user_input:
-            return jsonify({"error": "Missing 'choice' or 'user_input' parameter."}), 400
+        if not choice or not user_input or not user_id:
+            return jsonify({"error": "Missing 'choice', 'user_input', or 'user_id' parameter."}), 400
 
         # Choice 1: StudyBot
         if choice == 1:
@@ -47,10 +48,10 @@ def chat():
                 return jsonify({"error": "Invalid 'param1' value for StudyBot."}), 400
 
             if entity_type == "vocab":
-                list_vocab_mastery = get_vocab_mastery_by_topic(param2)
+                list_vocab_mastery = get_vocab_mastery_by_topic(param2, user_id)
                 system_prompt = prompt_function(list_vocab_mastery)
             elif entity_type == "grammar":
-                list_grammar_mastery = get_grammar_mastery()
+                list_grammar_mastery = get_grammar_mastery(user_id)
                 system_prompt = prompt_function(list_grammar_mastery)
 
             keyword = study_bot.analyze_keyword_response(conversation_history)
@@ -59,9 +60,9 @@ def chat():
             print("KeyWord: ", keyword)
             is_correct = True if correctness == "True" else False
             if entity_type == "vocab" and keyword:
-                update_function(is_correct, entity_type, param2, keyword)
+                update_function(is_correct, entity_type, param2, keyword, user_id)
             elif entity_type == "grammar":
-                update_function(is_correct, entity_type, 'grammar', param2)     
+                update_function(is_correct, entity_type, 'grammar', param2, user_id)     
 
             return jsonify({"response": chatbot_response})
 
@@ -69,17 +70,18 @@ def chat():
         elif choice == 2:  # RolePlayBot
             if not param1:
                 return jsonify({"error": "Missing 'param1' for RolePlayBot."}), 400
-            analysis = role_play_bot.analyze_errors(user_input, conversation_history)
+            analysis = role_play_bot.analyze_errors(user_input, conversation_history, user_id)
+            print(analysis)
             chatbot_response = role_play_bot.generate_response(user_input, conversation_history, param1)
             return jsonify({"response": chatbot_response, "grammar_errors": analysis})
 
         # Choice 3: ReviewBot 
         elif choice == 3:  # ReviewBot
-            chatbot_response = review_bot.generate_response(user_input, conversation_history)
+            chatbot_response = review_bot.generate_response(user_input, conversation_history, user_id)
             question = review_bot.extract_question(chatbot_response)
             correctness = review_bot.analyze_correct_user_response(chatbot_response)
             print(question)
-            update_one_param(correctness, 'sample_error', 'example', question)
+            update_one_param(correctness, 'sample_error', 'example', question, user_id)
             return jsonify({"response": chatbot_response})
         
         else:

@@ -27,7 +27,8 @@ class RolePlayBot:
         except Exception as e:
             return f"Error generating response: {e}"
 
-    def analyze_errors(self, user_response, conversation_history):
+
+    def analyze_errors(self, user_response, conversation_history, userID):
         analysis_prompt = get_detect_error_prompt(user_response, conversation_history)
         try:
             response = self.model.generate_content(analysis_prompt)
@@ -36,12 +37,13 @@ class RolePlayBot:
             error_pattern = r"-\s*(.*?):\s*(.*?)\s-\s.*:\s(.*)"
             errors = re.findall(error_pattern, analysis)
             # Update error statistics
-            for error_type, error_subtype, error_fix in errors:
-                update_two_params(False, 'error', 
-                                  error_type.lower(), 
-                                  error_subtype.lower())
-                if "không có lỗi" not in error_fix.lower():
-                    insert_sample_error('sample_error', user_response, error_fix)
+            # for error_type, error_subtype, error_fix in errors:
+                # update_two_params(False, 'error', 
+                #                   error_type.lower(), 
+                #                   error_subtype.lower(),
+                #                   userID)
+                # if "không có lỗi" not in error_fix.lower():
+                #     insert_sample_error('sample_error', user_response, error_fix, userID)
             
             return analysis
         except Exception as e:

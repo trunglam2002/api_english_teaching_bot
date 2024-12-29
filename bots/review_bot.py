@@ -10,20 +10,29 @@ class ReviewBot:
         # Cấu hình API của Gemini
         configure_api()
         self.model = get_model()
-        self.sentences_with_errors = get_errors()
-        self.prompt_template = get_review_prompt(self.sentences_with_errors)
 
     def update_conversation(self, object, message, conversation_history):
         """Thêm thông tin vào lịch sử trò chuyện"""
         conversation_history.append(f"{object}: {message}\n")
 
-    def get_random_sentence(self):
-        remaining_sentences = [s for s in self.sentences_with_errors]
+    def get_random_sentence(self, userID):
+        remaining_sentences = [s for s in get_errors(userID)]
         return random.choice(remaining_sentences) if remaining_sentences else None
 
-    def generate_response(self, user_input, conversation_history):
+    def generate_response(self, user_input, conversation_history, userID):
         self.update_conversation('user', user_input, conversation_history)
-        full_prompt = f"{self.prompt_template}\n\nLịch sử trò chuyện:\n{conversation_history}\n"
+        
+        # Lấy danh sách lỗi
+        errors = get_errors(userID)
+        
+        # Nếu danh sách lỗi rỗng, trả về thông báo
+        if not errors:
+            response = "Tuyệt vời! Hiện tại bạn chưa gặp lỗi nào, hãy luyện tập với chế độ nhập vai để tăng cường thêm kiến thức."
+            self.update_conversation('Chatbot', response, conversation_history)
+            return response
+        
+        # Tạo prompt nếu có lỗi
+        full_prompt = f"{get_review_prompt(errors)}\n\nLịch sử trò chuyện:\n{conversation_history}\n"
         try:
             response = self.model.generate_content(full_prompt).text.strip()
             self.update_conversation('Chatbot', response, conversation_history)

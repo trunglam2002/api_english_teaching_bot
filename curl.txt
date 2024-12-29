@@ -45,6 +45,7 @@ curl -X POST http://127.0.0.1:5000/chat \
 -d '{
     "choice": 3,
     "user_input": "hello",
+    "user_id":2,
     "conversation_history": [
         {"chatbot": "Phân tích lỗi sai trong câu sau: \"Ian loving pizza\""},
         {"user": "phải sửa thành I love pizza"}
