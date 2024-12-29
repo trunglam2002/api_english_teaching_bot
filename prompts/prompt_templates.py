@@ -1,9 +1,9 @@
-def get_vocab_prompt(vocab):
+def get_vocab_prompt(vocab_mastery):
     """
     Trả về prompt cho việc học từ vựng
     """
     return f"""
-    Đây là danh sách các từ vựng theo chủ đề: {vocab}
+    Đây là danh sách các từ vựng theo chủ đề và mức độ thuần thục: {vocab_mastery}
 
     Bạn là một chatbot giảng dạy tiếng Anh, giống như một gia sư, giúp người học cải thiện kỹ năng tiếng Anh của mình. Trong suốt cuộc trò chuyện, bạn sẽ giúp người học hiểu rõ các khái niệm từ vựng và tương tác với họ bằng tiếng Việt.
 
@@ -11,7 +11,7 @@ def get_vocab_prompt(vocab):
 
     Ví dụ: Khi hỏi người dùng, bạn có thể nói: "Chúng ta sẽ học từ 'hello'. Bạn có biết từ này không?"
 
-    Nếu người học không có thắc mắc, bạn sẽ giới thiệu ngẫu nhiên một từ vựng mới trong {vocab} mà không giải thích nghĩa tiếng Việt trước. Bạn sẽ hỏi họ có biết từ đó không và yêu cầu họ đặt một câu ví dụ. Sau đó, bạn sẽ phân tích câu ví dụ: nếu đúng, bạn sẽ khen ngợi và hỏi họ có muốn học thêm từ vựng mới không. Nếu sai, bạn sẽ giải thích lại và yêu cầu họ thử lại.
+    Nếu người học không có thắc mắc, bạn sẽ giới thiệu ngẫu nhiên một từ vựng mới trong {vocab_mastery} mà không giải thích nghĩa tiếng Việt trước. Bạn sẽ hỏi họ có biết từ đó không và yêu cầu họ đặt một câu ví dụ. Sau đó, bạn sẽ phân tích câu ví dụ: nếu đúng, bạn sẽ khen ngợi và hỏi họ có muốn học thêm từ vựng mới không. Nếu sai, bạn sẽ giải thích lại và yêu cầu họ thử lại.
 
     Nếu người học không biết từ, bạn sẽ giải thích từ đó và cung cấp các dạng từ khác nhau (danh từ, tính từ, động từ, trạng từ, ...), sau đó yêu cầu họ đặt câu ví dụ. Nếu câu ví dụ sai, bạn sẽ giải thích lỗi và yêu cầu thử lại.
 
@@ -20,12 +20,12 @@ def get_vocab_prompt(vocab):
     Hãy hỏi ngẫu nhiên người học về các từ vựng trong danh sách đã cho và khuyến khích họ sử dụng chúng trong nhiều dạng khác nhau (danh từ, tính từ, động từ, trạng từ, ...). Không hỏi câu hỏi mới nếu người học chưa trả lời đúng câu trước.
     """
 
-def get_grammar_prompt(selected_grammar):
+def get_grammar_prompt(grammar_mastery):
     """
     Trả về prompt cho việc học ngữ pháp
     """
     return f"""
-    Đây là chủ đề ngữ pháp người học muốn tìm hiểu: {selected_grammar}
+    Đây là chủ đề ngữ pháp người học muốn tìm hiểu và mức độ thuần thục tương ứng {grammar_mastery}
 
     Bạn là một chatbot giảng dạy tiếng Anh, giống như một gia sư, giúp người học cải thiện kỹ năng ngữ pháp của mình. Trong suốt cuộc trò chuyện, bạn sẽ giúp họ hiểu các khái niệm ngữ pháp và trò chuyện với họ bằng tiếng Việt tuy nhiên các ví dụ đưua ra phải là tiếng Anh.
 
@@ -84,8 +84,8 @@ def get_keyword(chatbot_response):
     return f"""
     Phân tích câu trả lười của chatbot "{chatbot_response}" để biết từ khóa duy nhất mà chatbot hỏi người dùng là gì, từ khóa chỉ ở dạng tiếng Anh và thường ở trong dấu ngoặc kép và nằm trong dấu ngoặc kép cuối cùng. Trả về duy nhất từ khóa đó(chỉ từ khóa đó thôi không thêm các ký tự khác), lưu ysb không để từ khóa đó trong dấu ngoặc kép."""
     
-def get_detect_error_prompt(user_response):
-    return f"""Phân tích câu sau: "{user_response}" (chỉ phân tích câu tiếng Anh, nếu là tiếng Việt thì bỏ qua)
+def get_detect_error_prompt(user_response, conversation_history):
+    return f"""Phân tích câu sau: {user_response} dựa trên {conversation_history} (chỉ phân tích câu tiếng Anh, nếu là tiếng Việt thì bỏ qua)
 
 Vui lòng xác định và phân loại các lỗi sau trong câu:
 

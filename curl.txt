@@ -27,7 +27,7 @@ curl -X POST http://127.0.0.1:5000/chat \
 }' | jq
 
 # role_play_bot
-curl -X POST http://192.168.1.142:5000/chat \
+curl -X POST http://27.72.62.241:5000/chat \
 -H "Content-Type: application/json" \
 -d '{
     "choice": 2,
@@ -55,6 +55,7 @@ curl -X POST http://127.0.0.1:5000/chat \
 #api_zalo_ai (text_to_speech)
 curl \
   -H "apikey: lJnZmVqD5GhkXe2RfG0LTitxbpnE4usO" \
-  --data-urlencode "input=Xin chào! My name is Lam." \
+  --data-urlencode "input=Hello bạn, how are you hôm nay, tôi khỏe thank you bạn. Tôi thích cup cake" \
   -d "speaker_id=2" \
   -X POST https://api.zalo.ai/v1/tts/synthesize
+(https://chunk.lab.zalo.ai/b436e8831ef7f7a9aee6/b436e8831ef7f7a9aee6)

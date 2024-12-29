@@ -2,7 +2,7 @@ import re
 import google.generativeai as genai 
 from .config.api_config import get_model, configure_api
 from prompts.prompt_templates import get_detect_error_prompt, get_roleplay_contexts
-from edit_table import update_two_params, insert_sample_error
+from database.edit_table import update_two_params, insert_sample_error
 
 class RolePlayBot:
     def __init__(self):
@@ -27,8 +27,8 @@ class RolePlayBot:
         except Exception as e:
             return f"Error generating response: {e}"
 
-    def analyze_errors(self, user_response):
-        analysis_prompt = get_detect_error_prompt(user_response)
+    def analyze_errors(self, user_response, conversation_history):
+        analysis_prompt = get_detect_error_prompt(user_response, conversation_history)
         try:
             response = self.model.generate_content(analysis_prompt)
             analysis = response.text.strip()

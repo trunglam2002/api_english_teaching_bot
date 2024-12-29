@@ -2,7 +2,7 @@ import re
 import google.generativeai as genai
 from .config.api_config import configure_api, get_model
 import random
-from edit_table import get_errors
+from database.edit_table import get_errors
 from prompts.prompt_templates import get_review_prompt
 
 class ReviewBot:

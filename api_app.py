@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 from bots.review_bot import ReviewBot
 from bots.roleplay_bot import RolePlayBot
 from bots.study_bot import StudyBot
-from edit_table import get_vocab_by_topic, update_one_param, update_vocab
+from database.edit_table import update_one_param, update_vocab, get_vocab_mastery_by_topic, get_grammar_mastery
 from prompts.prompt_templates import get_grammar_prompt, get_vocab_prompt
 
 # Initialize Flask app
@@ -47,16 +47,16 @@ def chat():
                 return jsonify({"error": "Invalid 'param1' value for StudyBot."}), 400
 
             if entity_type == "vocab":
-                list_vocab = get_vocab_by_topic(param2)
-                system_prompt = prompt_function(list_vocab)
+                list_vocab_mastery = get_vocab_mastery_by_topic(param2)
+                system_prompt = prompt_function(list_vocab_mastery)
             elif entity_type == "grammar":
-                system_prompt = prompt_function(param2)
+                list_grammar_mastery = get_grammar_mastery()
+                system_prompt = prompt_function(list_grammar_mastery)
 
             keyword = study_bot.analyze_keyword_response(conversation_history)
             chatbot_response = study_bot.ask_gemini(user_input, system_prompt, conversation_history)
             correctness = study_bot.analyze_correct_user_response(chatbot_response)
             print("KeyWord: ", keyword)
-            # correctness, keyword = study_bot.extract_analysis_result(analyze_response)
             is_correct = True if correctness == "True" else False
             if entity_type == "vocab" and keyword:
                 update_function(is_correct, entity_type, param2, keyword)
@@ -69,7 +69,7 @@ def chat():
         elif choice == 2:  # RolePlayBot
             if not param1:
                 return jsonify({"error": "Missing 'param1' for RolePlayBot."}), 400
-            analysis = role_play_bot.analyze_errors(user_input)
+            analysis = role_play_bot.analyze_errors(user_input, conversation_history)
             chatbot_response = role_play_bot.generate_response(user_input, conversation_history, param1)
             return jsonify({"response": chatbot_response, "grammar_errors": analysis})
 
@@ -78,10 +78,8 @@ def chat():
             chatbot_response = review_bot.generate_response(user_input, conversation_history)
             question = review_bot.extract_question(chatbot_response)
             correctness = review_bot.analyze_correct_user_response(chatbot_response)
-            # correctness, _ = review_bot.extract_analysis_result(analyze_response)
-            # is_correct = True if correctness == "True" else False
             print(question)
-            # x
+            update_one_param(correctness, 'sample_error', 'example', question)
             return jsonify({"response": chatbot_response})
         
         else:

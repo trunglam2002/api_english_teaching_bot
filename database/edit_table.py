@@ -177,40 +177,30 @@ def get_vocab_by_topic(topic):
         disconnect(conn)
     return [v[0] for v in vocab_list]
 
-def get_vocab_mastery(db_path='english_learning.db'):
+def get_vocab_mastery_by_topic(topic, db_path='english_learning.db'):
     """
-    Lấy mastery của các vocab từ cơ sở dữ liệu.
+    Lấy danh sách mastery của các từ trong một topic từ cơ sở dữ liệu.
+
+    Parameters:
+        topic (str): Tên topic cần lấy danh sách mastery.
+        db_path (str): Đường dẫn đến cơ sở dữ liệu SQLite.
+
+    Returns:
+        list: Danh sách (vocab, mastery) của các từ trong topic.
     """
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute('''SELECT topic, correct, incorrect FROM vocab''')
+    # Lấy dữ liệu mastery cho topic được truyền vào
+    cursor.execute('''SELECT vocab, mastery FROM vocab WHERE topic = ?''', (topic,))
     data = cursor.fetchall()
 
-    topic_data = {}
-    for row in data:
-        topic, correct, incorrect = row
-        if topic not in topic_data:
-            topic_data[topic] = {'correct': 0, 'incorrect': 0}
-        topic_data[topic]['correct'] += correct
-        topic_data[topic]['incorrect'] += incorrect
+    if not data:
+        conn.close()
+        return f"Topic '{topic}' không tồn tại trong cơ sở dữ liệu hoặc không có từ vựng nào."
 
-    result = []
-    for topic, counts in topic_data.items():
-        correct = counts['correct']
-        incorrect = counts['incorrect']
-        total = correct + incorrect
-        if total == 0:
-            mastery = 'new'
-        else:
-            accuracy = correct / total
-            if accuracy > 0.9:
-                mastery = 'mastered'
-            elif accuracy >= 0.5:
-                mastery = 'renewed'
-            else:
-                mastery = 'new'
-        result.append((topic, mastery))
+    # Trả về danh sách (vocab, mastery)
+    result = [(vocab, mastery) for vocab, mastery in data]
 
     conn.close()
     return result
@@ -218,28 +208,22 @@ def get_vocab_mastery(db_path='english_learning.db'):
 def get_grammar_mastery(db_path='english_learning.db'):
     """
     Lấy mastery của các grammar từ cơ sở dữ liệu.
+
+    Parameters:
+        db_path (str): Đường dẫn đến cơ sở dữ liệu SQLite.
+
+    Returns:
+        list: Danh sách các grammar và mastery của chúng.
     """
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
 
-    cursor.execute('''SELECT grammar, correct, incorrect FROM grammar''')
+    # Lấy thẳng cột grammar và mastery từ cơ sở dữ liệu
+    cursor.execute('''SELECT grammar, mastery FROM grammar''')
     data = cursor.fetchall()
 
-    result = []
-    for row in data:
-        grammar, correct, incorrect = row
-        total = correct + incorrect
-        if total == 0:
-            mastery = 'new'
-        else:
-            accuracy = correct / total
-            if accuracy > 0.9:
-                mastery = 'mastered'
-            elif accuracy >= 0.5:
-                mastery = 'renewed'
-            else:
-                mastery = 'new'
-        result.append((grammar, mastery))
+    # Đưa dữ liệu vào danh sách kết quả
+    result = [(grammar, mastery) for grammar, mastery in data]
 
     conn.close()
     return result
@@ -273,4 +257,4 @@ def get_errors():
 # print("\nGrammar Mastery:")
 # for item in grammar_result:
 #     print(item)
-# print(get_errors())
+# print(get_grammar_mastery())
